@@ -1,0 +1,45 @@
+use("db_citasMongo");
+db.usuario.insertOne({
+    usu_id: 987654321,
+    usu_nombre: "Jane",
+    usu_primer_apellido: "Smith",
+    usu_segdo_apellido: "Doe",
+    usu_telefono: "9876543210",
+    usu_direccion: "456 Elm Street",
+    ["usu_e-mail"]: "janeSmith@gmail.com",
+    usu_tipodoc: "TI",
+    usu_NumeroDoc: "123456789",
+    usu_genero: "Femenino",
+    usu_acudiente: 123456789
+});
+
+use("db_citasMongo");
+db.acudiente.insertOne({
+    acu_codigo: 123456789,
+    acu_nombreCompleto: "John Doe",
+    acu_telefono: 1234567890,
+    acu_direccion: "123 Main Street"
+})
+
+use("db_citasMongo");
+db.cita.insertOne({
+    cit_codigo: 123456789,
+    cit_fecha: new Date("2021-10-10"),
+    cit_estado: "Pendiente",
+    cit_medico: 123456789,
+    cit_datosUsuario: 98765432
+})
+
+use("db_citasMongo");
+db.medico.insertOne({
+    med_nro_MatriculaProsional: 123456789,
+    med_nombreCompleto: "John Doe",
+    med_especialidad: "Medicina General",
+    med_consultorio: 123
+})
+
+use("db_citasMongo");
+db.consultorio.insertOne({
+    cons_codigo: 123,
+    cons_nombre: "Consultorio 1",
+})
