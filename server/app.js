@@ -1,0 +1,14 @@
+import express from 'express';
+import configurePassport from '../src/security/passport.js';
+import { autenticacion } from '../src/security/autenticacion.js';
+import { handleInternalServerError } from '../src/errors/errors.js';
+import { dynamicRouter } from './dynamicRouter.js';
+const app = express();
+const passport = configurePassport();
+app.use(express.json());
+app.use(passport.initialize());
+app.get('/autorizacion/:usuario', autenticacion);
+app.use('/', passport.authenticate('bearer', { session: false }), (req, res, next) => {next()});
+app.use('/:collection', dynamicRouter);
+app.use((err, req, res, next) => {handleInternalServerError(err, res);});
+export default app;
