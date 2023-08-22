@@ -1,0 +1,100 @@
+use("db_citasMongo");
+db.Users.insertMany([
+    {
+        "nombre": "ADMINISTRADOR",
+        "usuario": "sudosu",
+        "rol": "sudosu",
+        "email": "anonimoMiRey@gmail.com"
+    }
+]);
+
+use("db_citasMongo");
+db.createCollection("usuario", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            required: ["usu_id", "usu_nombre", "usu_primer_apellido", "usu_telefono", "usu_direccion", "usu_tipodoc", "usu_NumeroDoc", "usu_genero"],
+            additionalProperties: true,
+            properties: {
+                usu_id: { bsonType: "int", description: "DNI debe ser un entero y es requerido" },
+                usu_nombre: { bsonType: "string", description: "Primer Nombre debe ser un string y es requerido" },
+                usu_segdo_nombre: { bsonType: "string", description: "Segundo Nombre debe ser un string" },
+                usu_primer_apellido: { bsonType: "string", description: "Primer Apellido debe ser un string y es requerido" },
+                usu_segdo_apellido: { bsonType: "string", description: "Segundo Apellido debe ser un string y es requerido" },
+                usu_telefono: { bsonType: "string", description: "Telefono solo puede contener numeros y es requerido", pattern: "^[0-9]+$" },
+                usu_direccion: { bsonType: "string", description: "Direccion es un string y es requerido" },
+                ["usu_e-mail"]: { bsonType: "string", description: "Correo electronico debe ser una direccion de correo valido" },
+                usu_tipodoc: { enum: ['CC', 'TI', 'PSP', 'RCN', 'CEX'] },
+                usu_NumeroDoc: { bsonType: "string", description: "Numero de documento solo puede contener numeros y es requerido", pattern: "^[0-9]+$" },
+                usu_genero: { enum: ['Masculino', 'Femenino', 'Otro'], description: "Genero solo puede ser Masculino, Femenino o Prefiero no decirlo" },
+                usu_acudiente: { bsonType: "int", description: "Id acudiente debe ser un entero y es requerido" }
+            }
+        }
+    }
+});
+
+use("db_citasMongo");
+db.createCollection("acudiente", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            required: ["acu_codigo", "acu_nombreCompleto", "acu_telefono", "acu_direccion"],
+            properties: {
+                acu_codigo: {bsonType: "int",description: "Codigo del acudiente debe ser un entero y es requerido"},
+                acu_nombreCompleto: {bsonType: "string",description: "Nombre completo del acudiente debe ser un string y es requerido"},
+                acu_telefono: {bsonType: "int",description: "Telefono del acudiente debe ser un int y solo puede contener numeros",pattern: "^[0-9]+$"},
+                acu_direccion: {bsonType: "string",description: "Direccion del acudiente debe ser un string y es requerido"}
+            }
+        }
+    }
+});
+
+use("db_citasMongo");
+db.createCollection("cita", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            required: ["cit_codigo", "cit_fecha", "cit_estado", "cit_medico", "cit_datosUsuario"],
+            additionalProperties: true,
+            properties: {
+                cit_codigo: { bsonType: "int", description: "Codigo de la cita debe ser un entero y es requerido" },
+                cit_fecha: { bsonType: "date", description: "Fecha de la cita deber ser una fecha y es requerida" },
+                cit_estado: { enum: ['Pendiente', 'Cancelada', 'Realizada'], description: "Estado de la cita solo puede ser Pendiente,Cancelada,Realizada " },
+                cit_medico: { bsonType: "int", description: "Id del medico debe ser un intero y es requerida" },
+                cit_datosUsuario: { bsonType: "int", description: "Id del usuario debe ser un entero y es requerida" }
+            }
+        }
+    }
+});
+
+use("db_citasMongo");
+db.createCollection("medico", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            required: ["med_nro_MatriculaProsional", "med_nombreCompleto", "med_especialidad", "med_consultorio"],
+            additionalProperties: true,
+            properties: {
+                med_nro_MatriculaProsional: { bsonType: "int", description: "Codigo del medico debe ser un entero y es requerida" },
+                med_nombreCompleto: { bsonType: "string", description: "Nombre completo del medico debe ser un string y es requerido" },
+                med_especialidad: { bsonType: "string", description: "Especialidad del medico debe ser un string y es requerido" },
+                med_consultorio: { bsonType: "int", description: "Consultorio del medico debe ser un entero y es requerido" },
+            }
+        }
+    }
+});
+
+use("db_citasMongo");
+db.createCollection("consultorio", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            required: ["cons_codigo", "cons_nombre"],
+            additionalProperties: true,
+            properties: {
+                cons_codigo: { bsonType: "int", description: "Codigo del consultorio debe ser un entero y es requerido" },
+                cons_nombre: { bsonType: "string", description: "Nombre del consultorio debe ser un string y es requerido" }
+            }
+        }
+    }
+});
